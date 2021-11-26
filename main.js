@@ -99,14 +99,32 @@ for (let inst_idx = 0; inst_idx < audio_files.length; inst_idx++) {
 
 
 let markers = document.getElementsByClassName("marker")
-
+let noodle_img = document.getElementsByClassName("noodle")[0]
+let noodle_frames = [
+    "noodle/NoodleDrums_00001.png",
+    "noodle/NoodleDrums_00002.png",
+    "noodle/NoodleDrums_00003.png",
+    "noodle/NoodleDrums_00004.png",
+    "noodle/NoodleDrums_00005.png",
+    "noodle/NoodleDrums_00006.png",
+    "noodle/NoodleDrums_00007.png",
+    "noodle/NoodleDrums_00008.png",
+]
 // stuff
 
-function play_beat() {
+function update_marker_indicator()
+{
+    // update marker indicator
     for (let i = 0; i < markers.length; i++) {
         markers[i].checked = false
     }
     markers[marker].checked = true
+}
+
+function play_beat() {
+    update_marker_indicator()
+
+    // play audio
     for (let i = 0; i < audio_files.length; i++) {
         if (sequence_matrix[i][marker]) {
             
@@ -117,24 +135,53 @@ function play_beat() {
             }
         }
     }
+
+    // change noodle frame
+    let noodle_frame = 0
+    if (sequence_matrix[0][marker]) {
+        noodle_frame += 4
+    }
+    if (sequence_matrix[1][marker]) {
+        noodle_frame += 2
+    }
+    if (sequence_matrix[2][marker] || sequence_matrix[3][marker] || sequence_matrix[4][marker] || sequence_matrix[5][marker] || sequence_matrix[6][marker] || sequence_matrix[7][marker] || sequence_matrix[8][marker]) {
+        noodle_frame += 1
+    }
+
+    noodle_img.src = noodle_frames[noodle_frame]
+
+    // update marker
     marker = (marker + 1) % sequence_length
 }
 
 Timer = setInterval(play_beat, 300)
-
+isplaying = true
+current_interval = 0
 function change_bpm() {
     let bpm_element = document.getElementById("input_bpm")
     let bpm_value = Math.min(522, Math.max(10, bpm_element.value))
     bpm_element.value = bpm_value
-
-    clearInterval(Timer)
-    let bb = (60000/bpm_value)/4
-    console.log(bb);
-    console.log(bpm_value);
-    Timer = setInterval(play_beat, bb)
+    current_interval = (60000/bpm_value)/4
+    if (isplaying) {
+        clearInterval(Timer)
+        console.log(current_interval);
+        console.log(bpm_value);
+        Timer = setInterval(play_beat, current_interval)
+    }
 }
 
 change_bpm()
+function toggle_play() {
+    if (isplaying) {
+        clearInterval(Timer)
+        marker = 0
+        update_marker_indicator()
+    } else {
+        marker = 0
+        Timer = setInterval(play_beat, current_interval)
+    }
+    isplaying = !isplaying
+}
 
 function modify_sequence(inst_idx, mkr_idx)
 {
