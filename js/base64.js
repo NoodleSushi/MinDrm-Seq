@@ -91,11 +91,14 @@ export class Base64Deserializer extends Base64Abstract {
     }
 
     fill_leftover(min_bit_count) {
-        while (this.leftover_count < min_bit_count && this.input.length != 0) {
-            let char = this.input.charAt(0)
-            this.leftover_bits = (this.leftover_bits << 6) + this.c2i[char]
-            this.input = this.input.substring(1)
+        while (this.leftover_count < min_bit_count) {
+            this.leftover_bits = (this.leftover_bits << 6)
             this.leftover_count += 6
+            if (this.input.length > 0) {
+                let char = this.input.charAt(0)
+                this.leftover_bits += this.c2i[char]
+                this.input = this.input.substring(1)
+            }
         }
     }
 }
