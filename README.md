@@ -1,5 +1,5 @@
 # MinDrm-Seq
-*Published on July 12, 2020*
+*Published on November 27, 2021*
 
 A simple drum sequencer written in html and js
 
