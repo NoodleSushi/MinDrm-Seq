@@ -1,7 +1,7 @@
 export default class NoodleImage {
-    constructor(noodle_img) {
-        this.noodle_img = noodle_img
-        this.frame_paths = [
+    constructor(div_elem) {
+        console.log(div_elem)
+        this.frame_imgs = [
             "noodle/NoodleDrums_00001.png",
             "noodle/NoodleDrums_00002.png",
             "noodle/NoodleDrums_00003.png",
@@ -10,7 +10,13 @@ export default class NoodleImage {
             "noodle/NoodleDrums_00006.png",
             "noodle/NoodleDrums_00007.png",
             "noodle/NoodleDrums_00008.png",
-        ]
+        ].map(frame_path => {
+            const img = document.createElement("img")
+            img.src = frame_path
+            img.style.display = 'none'
+            div_elem.appendChild(img)
+            return img
+        })
     }
 
     edit_frame(is_kick = false, is_snare = false, is_etc = false) {
@@ -24,6 +30,8 @@ export default class NoodleImage {
         if (is_etc) {
             noodle_frame += 2
         }
-        this.noodle_img.src = this.frame_paths[noodle_frame]
+        this.frame_imgs.forEach((frame_img, idx) => {
+            frame_img.style.display = (idx === noodle_frame) ? 'block' : 'none'
+        })
     }
 }
