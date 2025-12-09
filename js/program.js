@@ -4,6 +4,24 @@ import { Base64Serializer, Base64Deserializer } from "./base64.js"
 
 export default class Program {
     constructor() {
+        // fill sequencer
+        const seq = document.getElementsByClassName("sequencer")[0]
+        const steps = i => [...Array(16)]
+            .map((_, n) => `<td><input class="step_box${i}" type="checkbox" onclick="window.program.Itoggle_step(${i},${n})"></td>`)
+            .join("");
+
+        const row = Handlebars.compile(
+            `<tr><td><center>{{label}}</center></td>{{{cells}}}</tr>`
+        );
+
+        const instruments = ["Kick", "Snare", "Closed Hat", "Open Hat", "Crash", "Tom Hi", "Tom Mid", "Tom Low", "Ride"];
+
+        seq.innerHTML =
+            instruments.map((label, i) => row({ label, cells: steps(i) })).join("") +
+            `<tr><td><button onclick="window.program.Itoggle_play()">Toggle Play</button></td>` +
+            [...Array(16)].map(() => `<td><input type="checkbox" class="marker"></td>`).join("") +
+            `</tr>`;
+
         // html elements
         this.marker_checkboxes = document.getElementsByClassName("marker")
         this.bpm_element = document.getElementById("input_bpm")
@@ -57,7 +75,7 @@ export default class Program {
     set_bpm(new_bpm) {
         this.bpm_value = new_bpm
         this.bpm_element.value = this.bpm_value
-        this.bpm_interval = 60000/(this.bpm_value*4)
+        this.bpm_interval = 60000 / (this.bpm_value * 4)
 
         if (this.is_playing) {
             clearInterval(this.timer)
@@ -66,7 +84,7 @@ export default class Program {
     }
 
     start_timer() {
-        this.timer = setInterval(() => {this.play_beat()}, this.bpm_interval)
+        this.timer = setInterval(() => { this.play_beat() }, this.bpm_interval)
     }
 
     get_serialized() {
