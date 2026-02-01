@@ -71,6 +71,19 @@ export default class DrumKit {
                 break;
             case 4:
                 this.audio_files = [
+                    new Audio("sounds/909 BD.wav"),
+                    new Audio("sounds/909 SD.wav"),
+                    new Audio("sounds/909 CH.wav"),
+                    new Audio("sounds/909 OH.wav"),
+                    new Audio("sounds/909 Crash.wav"),
+                    new Audio("sounds/909 Tom Hi.wav"),
+                    new Audio("sounds/909 Tom Mid.wav"),
+                    new Audio("sounds/909 Tom Lo.wav"),
+                    new Audio("sounds/909 Ride.wav")
+                ]
+                break;
+            case 5:
+                this.audio_files = [
                     new Audio("sounds/CR78 BD.wav"),
                     new Audio("sounds/CR78 SD.wav"),
                     new Audio("sounds/CR78 CH.wav"),
@@ -82,7 +95,7 @@ export default class DrumKit {
                     new Audio("sounds/CR78 OH.wav")
                 ]
                 break;
-            case 5:
+            case 6:
                 this.audio_files = [
                     new Audio("sounds/LinnDrum BD.wav"),
                     new Audio("sounds/LinnDrum SD.wav"),
